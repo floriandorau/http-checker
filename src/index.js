@@ -1,6 +1,6 @@
-require('dotenv').config();
-
 const got = require('got');
+
+const config = require('./config').readConfig();
 
 const logResponse = function ({ statusCode, statusMessage, body, ip, headers }) {
     const ts = new Date().toISOString();
@@ -28,13 +28,11 @@ const executeRequest = async function (url, username, password) {
 };
 
 const run = async function () {
-    const endpoint = process.env.URL;
-    const username = process.env.USERNAME;
-    const password = process.env.PASSWORD;
-    const interval = process.env.INTERVAL;
-
-    console.log(`Executing request against ${endpoint} every ${interval}s`);
-    setInterval(() => executeRequest(endpoint, username, password), interval * 1000);
+    const { interval, endpoints } = config;
+    for (const endpoint of endpoints) {
+        console.log(`Executing request against ${endpoint.url} every ${interval}s`);
+        setInterval(() => executeRequest(endpoint.url, endpoint.username, endpoint.password), interval * 1000);
+    }
 };
 
 run();
