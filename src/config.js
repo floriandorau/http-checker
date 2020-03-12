@@ -31,6 +31,7 @@ const readConfig = function () {
     return Object.assign({}, {
         endpoints: config.endpoints || throwConfigError('endpoints'),
         interval: config.interval || 10,
+        delay: config.delay || 5
     });
 };
 

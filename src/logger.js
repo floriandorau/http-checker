@@ -8,7 +8,7 @@ const createIfNotExist = function (path) {
         fs.mkdirSync(path);
     }
     return path;
-}
+};
 
 class Logger {
     constructor(logFilePath) {

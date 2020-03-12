@@ -25,16 +25,30 @@ const executeRequest = async function (url, { username, password }, logger) {
     }
 };
 
+const scheduleRequestExecution = function ({ url, username, password }, interval) {
+    const [domain,] = new URL(url).hostname.split('.');
+    const logger = createLogger(domain);
+
+    logger.info(`Executing request against ${url} with interval of ${interval}s`);
+    executeRequest(url, { username, password }, logger);
+    setInterval(() => executeRequest(url, { username, password }, logger), interval * 1000);
+};
+
+const sleep = function (ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+};
+
 const run = async function () {
     const { interval, endpoints } = config;
-    for (const { url, username, password } of endpoints) {
-        // Create logger forr current endpoint
-        const [domain,] = new URL(url).hostname.split('.');
-        const logger = createLogger(domain);
 
-        logger.info(`Executing request against ${url} every ${interval}s`);
-        executeRequest(url, { username, password }, logger);
-        setInterval(() => executeRequest(url, { username, password }, logger), interval * 1000);
+    if (!Array.isArray(endpoints)) {
+        throw new Error('expected endpoints to be list');
+    }
+
+    for (const endpoint of endpoints) {
+        scheduleRequestExecution(endpoint, interval);
+        // Schedule endpoint execution with a little delay
+        sleep(config.delay * 1000);
     }
 };
 
