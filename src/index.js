@@ -1,40 +1,40 @@
 const got = require('got');
-const { green, red, cyan } = require('chalk');
 
+const { createLogger } = require('./logger');
 const config = require('./config').readConfig();
 
-const logResponse = function ({ statusCode, statusMessage, body, ip, headers }) {
-    const ts = cyan(new Date().toISOString());
-
+const createLogMessage = function ({ statusCode, statusMessage, body, ip, headers }) {
     if (statusCode >= 300) {
-        console.log(`${ts} - Http status ${red(statusCode)} [${red(statusMessage)}] from ${ip} at ${headers.date}`);
-        console.log(ts, headers);
-        console.log(ts, body);
+        return `Http status ${statusCode} [${statusMessage}] from ${ip}
+        ${headers}
+        ${body}
+        `;
     } else {
-        console.log(`${ts} - Http status ${green(statusCode)} [${green(statusMessage)}] from ${ip} at ${headers.date}`);
+        return `Http status ${statusCode} [${statusMessage}] from ${ip}`;
     }
 };
 
-const logError = function (error) {
-    const ts = new Date().toISOString();
-    console.error(ts, error);
-};
-
-const executeRequest = async function (url, { username, password }) {
+const executeRequest = async function (url, { username, password }, logger) {
     try {
         const options = (username && password) ? { username, password } : {};
         const response = await got(url, options);
-        logResponse(response);
+        const message = createLogMessage(response);
+        logger.info(message);
     } catch (err) {
-        logError(err);
+        logger.error('', err);
     }
 };
 
 const run = async function () {
     const { interval, endpoints } = config;
     for (const { url, username, password } of endpoints) {
-        console.log(`Executing request against ${url} every ${interval}s`);
-        setInterval(() => executeRequest(url, { username, password }), interval * 1000);
+        // Create logger forr current endpoint
+        const [domain,] = new URL(url).hostname.split('.');
+        const logger = createLogger(domain);
+
+        logger.info(`Executing request against ${url} every ${interval}s`);
+        executeRequest(url, { username, password }, logger);
+        setInterval(() => executeRequest(url, { username, password }, logger), interval * 1000);
     }
 };
 

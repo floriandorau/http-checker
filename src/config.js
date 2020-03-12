@@ -3,11 +3,16 @@ const YAML = require('yaml');
 const { join } = require('path');
 const { homedir } = require('os');
 
-const CONFIG_FOLDER = '.http-checker';
+const APP_DIR = '.http-checker';
 const CONFIG_FILE_NAME = 'config.yml';
+const APP_PATH = join(homedir(), APP_DIR);
 
 const throwConfigError = function (name) {
     throw Error(`No value set for '${name}' in config.yml`);
+};
+
+const getLogPath = function () {
+    return join(APP_PATH, 'logs');
 };
 
 const readConfigFile = function (path) {
@@ -16,7 +21,7 @@ const readConfigFile = function (path) {
 };
 
 const readConfig = function () {
-    const configPath = join(homedir(), CONFIG_FOLDER, CONFIG_FILE_NAME);
+    const configPath = join(APP_PATH, CONFIG_FILE_NAME);
 
     if (!fs.existsSync(configPath)) {
         throw new Error('No config.yml found. Please make sure that you have a valid config at ' + configPath);
@@ -25,9 +30,8 @@ const readConfig = function () {
     const config = readConfigFile(configPath);
     return Object.assign({}, {
         endpoints: config.endpoints || throwConfigError('endpoints'),
-        interval: config.interval || throwConfigError('interval'),
+        interval: config.interval || 10,
     });
 };
 
-
-module.exports = { readConfig };
+module.exports = { readConfig, getLogPath };
