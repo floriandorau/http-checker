@@ -1,13 +1,16 @@
 {
   "name": "@floriandorau/http-checker",
   "version": "1.0.0",
-  "description": "",
+  "description": "Tool to check frequently http response status",
   "main": "index.js",
   "scripts": {
-    "start": "node ./src/index.js"
+    "start": "node ./bin/http-checker.js"
   },
-  "author": "",
-  "license": "ISC",
+  "bin": {
+    "http-checker": "./bin/http-checker.js"
+  },
+  "author": "floriandorau",
+  "license": "MIT",
   "dependencies": {
     "got": "10.6.0",
     "yaml": "1.8.2"
