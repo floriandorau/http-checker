@@ -1,5 +1,5 @@
 {
-  "name": "http-checker",
+  "name": "@floriandorau/http-checker",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

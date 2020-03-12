@@ -1,9 +1,9 @@
 const fs = require('fs');
 const YAML = require('yaml');
 const { join } = require('path');
-const homedir = require('os').homedir();
-const package = require('../package.json');
+const { homedir } = require('os');
 
+const CONFIG_FOLDER = '.http-checker';
 const CONFIG_FILE_NAME = 'config.yml';
 
 const throwConfigError = function (name) {
@@ -16,7 +16,7 @@ const readConfigFile = function (path) {
 };
 
 const readConfig = function () {
-    const configPath = join(homedir, `.${package.name}`, CONFIG_FILE_NAME);
+    const configPath = join(homedir(), CONFIG_FOLDER, CONFIG_FILE_NAME);
 
     if (!fs.existsSync(configPath)) {
         throw new Error('No config.yml found. Please make sure that you have a valid config at ' + configPath);
