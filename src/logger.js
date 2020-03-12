@@ -31,7 +31,8 @@ const createLogger = function (name) {
     const logsFolder = createIfNotExist(config.getLogPath());
     const logFileFolder = createIfNotExist(join(logsFolder, name));
 
-    const logFileName = join(logFileFolder, `${name}-${new Date().toISOString()}.log`);
+    let logFileName = join(logFileFolder, `${name}-${new Date().toISOString()}.log`);
+    logFileName = createIfNotExist(join(logsFolder, logFileName));
     return new Logger(logFileName);
 };
 
