@@ -11,12 +11,12 @@ const logResponse = function ({ statusCode, statusMessage, body, ip, headers }) 
         console.log(ts, headers);
         console.log(ts, body);
     }
-}
+};
 
 const logError = function (error) {
     const ts = new Date().toISOString();
     console.error(ts, error);
-}
+};
 
 const executeRequest = async function (url, username, password) {
     try {
@@ -25,7 +25,7 @@ const executeRequest = async function (url, username, password) {
     } catch (err) {
         logError(err);
     }
-}
+};
 
 const run = async function () {
     const endpoint = process.env.URL;
@@ -35,6 +35,6 @@ const run = async function () {
 
     console.log(`Executing request against ${endpoint} every ${interval}s`);
     setInterval(() => executeRequest(endpoint, username, password), interval * 1000);
-}
+};
 
 run();
