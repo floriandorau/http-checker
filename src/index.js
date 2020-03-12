@@ -1,15 +1,17 @@
 const got = require('got');
+const { green, red, cyan } = require('chalk');
 
 const config = require('./config').readConfig();
 
 const logResponse = function ({ statusCode, statusMessage, body, ip, headers }) {
-    const ts = new Date().toISOString();
-
-    console.log(`${ts} - Http status ${statusCode} [${statusMessage}] from ${ip} at ${headers.date}`);
+    const ts = cyan(new Date().toISOString());
 
     if (statusCode >= 300) {
+        console.log(`${ts} - Http status ${red(statusCode)} [${red(statusMessage)}] from ${ip} at ${headers.date}`);
         console.log(ts, headers);
         console.log(ts, body);
+    } else {
+        console.log(`${ts} - Http status ${green(statusCode)} [${green(statusMessage)}] from ${ip} at ${headers.date}`);
     }
 };
 
