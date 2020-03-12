@@ -1,6 +1,6 @@
 {
   "name": "@floriandorau/http-checker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Tool to check frequently http response status",
   "main": "index.js",
   "scripts": {
