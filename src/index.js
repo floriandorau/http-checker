@@ -18,9 +18,10 @@ const logError = function (error) {
     console.error(ts, error);
 };
 
-const executeRequest = async function (url, username, password) {
+const executeRequest = async function (url, { username, password }) {
     try {
-        const response = await got(url, { username, password });
+        const options = (username && password) ? { username, password } : {};
+        const response = await got(url, options);
         logResponse(response);
     } catch (err) {
         logError(err);
@@ -29,9 +30,9 @@ const executeRequest = async function (url, username, password) {
 
 const run = async function () {
     const { interval, endpoints } = config;
-    for (const endpoint of endpoints) {
-        console.log(`Executing request against ${endpoint.url} every ${interval}s`);
-        setInterval(() => executeRequest(endpoint.url, endpoint.username, endpoint.password), interval * 1000);
+    for (const { url, username, password } of endpoints) {
+        console.log(`Executing request against ${url} every ${interval}s`);
+        setInterval(() => executeRequest(url, { username, password }), interval * 1000);
     }
 };
 
