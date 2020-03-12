@@ -1,5 +1,5 @@
 const config = require('./config');
-const fs = require('fs');
+const fs = require('fse');
 const { join } = require('path');
 const { createSimpleLogger } = require('simple-node-logger');
 
@@ -32,7 +32,7 @@ const createLogger = function (name) {
     const logFileFolder = createIfNotExist(join(logsFolder, name));
 
     let logFileName = join(logFileFolder, `${name}-${new Date().toISOString()}.log`);
-    logFileName = createIfNotExist(join(logsFolder, logFileName));
+    logFileName = fs.touchFileSync(logFileName);
     return new Logger(logFileName);
 };
 
