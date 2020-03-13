@@ -4,17 +4,17 @@
 
 ### As npm package
 
-The easiest way to run `http-checker` is to install as global `npm` package like the following
+The easiest way to run `http-checker` is to install it as global `npm` package like the following
 
 ```bash
 npm install -g @floriandorau/http-checker
 ```
 
-After you installed it you can execute `http-checker` in your terminal.
+After installation it you can execute in your terminal via `http-checker`.
 
-### From srouce
+### From source
 
-Checkout the repository and run `npm install` from root. Aftetr that you can run `npm start` from your terminal.
+Checkout the repository and run `npm install` from root. Then you can run `npm start` from project root in your terminal.
 
 ## Configuration
 
