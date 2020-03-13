@@ -27,12 +27,17 @@ class Logger {
     }
 }
 
+const currentTimestampString = function () {
+    // Creates a string in format 2020-01-01T01-01-01"
+    return new Date().toJSON().split('.')[0].replace(/:/gi, '-');
+};
+
 const createLogger = function (name) {
     const logsFolder = createIfNotExist(config.getLogPath());
     const logFileFolder = createIfNotExist(join(logsFolder, name));
 
-    let logFileName = join(logFileFolder, `${name}-${new Date().toISOString()}.log`);
-    logFileName = fs.touchFileSync(logFileName);
+    let logFileName = join(logFileFolder, `${name}-${currentTimestampString()}.log`);
+    logFileName = fs.writeFileSync(logFileName);
     return new Logger(logFileName);
 };
 
