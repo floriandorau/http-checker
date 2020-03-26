@@ -24,6 +24,9 @@ A valid configuration looks like the following:
 
 ```yaml
 interval: 30 # interval in secondes
+slack:
+  webbhook: https://your-webhoook
+  channel: your-chanel-name
 endpoints:
   - url: http://localhost:8080
     username: basic-auth-user
