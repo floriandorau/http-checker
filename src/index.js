@@ -1,5 +1,7 @@
 const got = require('got');
 
+const { sleep } = require('./util');
+const { sendMessage } = require('./slack');
 const { createLogger } = require('./logger');
 const config = require('./config').readConfig();
 
@@ -18,8 +20,11 @@ const executeRequest = async function (url, { username, password }, logger) {
     try {
         const options = (username && password) ? { username, password } : {};
         const response = await got(url, options);
-        const message = createLogMessage(response);
-        logger.info(message);
+
+        logger.info(createLogMessage(response));
+        if (response.statusCode >= 300) {
+            sendMessage(response);
+        }
     } catch (err) {
         logger.error('', err);
     }
@@ -32,10 +37,6 @@ const scheduleRequestExecution = function ({ url, username, password }, interval
     logger.info(`Executing request against ${url} with interval of ${interval}s`);
     executeRequest(url, { username, password }, logger);
     setInterval(() => executeRequest(url, { username, password }, logger), interval * 1000);
-};
-
-const sleep = function (ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
 };
 
 const run = async function () {

@@ -29,6 +29,7 @@ const readConfig = function () {
 
     const config = readConfigFile(configPath);
     return Object.assign({}, {
+        slack: config.slack || throwConfigError('slack'),
         endpoints: config.endpoints || throwConfigError('endpoints'),
         interval: config.interval || 10,
         delay: config.delay || 5
