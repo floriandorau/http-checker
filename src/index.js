@@ -5,14 +5,14 @@ const { sendMessage } = require('./slack');
 const { createLogger } = require('./logger');
 const config = require('./config').readConfig();
 
-const createLogMessage = function ({ statusCode, statusMessage, body, ip, headers }) {
+const createLogMessage = function (url, { statusCode, statusMessage, body, ip, headers }) {
     if (statusCode >= 300) {
-        return `Http status ${statusCode} [${statusMessage}] from ${ip}
+        return `Http status ${statusCode} [${statusMessage}] from ${ip} [${url}]
         ${headers}
         ${body}
         `;
     } else {
-        return `Http status ${statusCode} [${statusMessage}] from ${ip}`;
+        return `Http status ${statusCode} [${statusMessage}] from ${ip} [${url}]`;
     }
 };
 
@@ -21,7 +21,7 @@ const executeRequest = async function (url, { username, password }, logger) {
         const options = (username && password) ? { username, password } : {};
         const response = await got(url, options);
 
-        logger.info(createLogMessage(response));
+        logger.info(createLogMessage(url, response));
         if (response.statusCode >= 300) {
             sendMessage(response);
         }
@@ -48,8 +48,9 @@ const run = async function () {
 
     for (const endpoint of endpoints) {
         scheduleRequestExecution(endpoint, interval);
-        // Schedule endpoint execution with a little delay
-        sleep(config.delay * 1000);
+
+        // Schedule execution of different endpoints with a delay
+        await sleep(config.delay * 1000);
     }
 };
 
