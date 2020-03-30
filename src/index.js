@@ -1,4 +1,5 @@
 const got = require('got');
+const { inspect } = require('util');
 
 const { sleep } = require('./util');
 const { sendMessage } = require('./slack');
@@ -8,25 +9,26 @@ const config = require('./config').readConfig();
 const createLogMessage = function (url, { statusCode, statusMessage, body, ip, headers }) {
     if (statusCode >= 300) {
         return `Http status ${statusCode} [${statusMessage}] from ${ip} [${url}]
-        ${headers}
-        ${body}
-        `;
+        ${inspect(headers)}
+        
+        ${body}`;
     } else {
         return `Http status ${statusCode} [${statusMessage}] from ${ip} [${url}]`;
     }
 };
 
 const executeRequest = async function (url, { username, password }, logger) {
+    let response;
     try {
         const options = (username && password) ? { username, password } : {};
-        const response = await got(url, options);
+        response = await got(url, { ...options, throwHttpErrors: false });
 
         logger.info(createLogMessage(url, response));
         if (response.statusCode >= 300) {
             sendMessage(response);
         }
     } catch (err) {
-        logger.error('', err);
+        logger.error(`Error while checking url '${url}'`);
     }
 };
 
@@ -34,7 +36,7 @@ const scheduleRequestExecution = function ({ url, username, password }, interval
     const [domain,] = new URL(url).hostname.split('.');
     const logger = createLogger(domain);
 
-    logger.info(`Executing request against ${url} with interval of ${interval}s`);
+    logger.info(`Executing request against ${url} with interval of ${interval} s`);
     executeRequest(url, { username, password }, logger);
     setInterval(() => executeRequest(url, { username, password }, logger), interval * 1000);
 };

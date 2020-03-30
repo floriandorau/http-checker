@@ -14,7 +14,6 @@ const createMessage = function ({ statusCode, statusMessage, body, ip, headers }
 };
 
 const sendMessage = async function (httpResponse) {
-
     got.post(config.slack.webhook, {
         headers: {
             'Content-type': 'application/json; charset=utf-8',
