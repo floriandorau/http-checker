@@ -2,15 +2,16 @@ const got = require('got');
 const { inspect } = require('util');
 
 const { sleep } = require('./util');
-const { sendMessage } = require('./slack');
 const { createLogger } = require('./logger');
+const { sendMessage, sendErrorMessage } = require('./slack');
+
 const config = require('./config').readConfig();
 
 const createLogMessage = function (url, { statusCode, statusMessage, body, ip, headers }) {
     if (statusCode >= 300) {
         return `Http status ${statusCode} [${statusMessage}] from ${ip} [${url}]
         ${inspect(headers)}
-        
+
         ${body}`;
     } else {
         return `Http status ${statusCode} [${statusMessage}] from ${ip} [${url}]`;
@@ -25,10 +26,11 @@ const executeRequest = async function (url, { username, password }, logger) {
 
         logger.info(createLogMessage(url, response));
         if (response.statusCode >= 300) {
-            sendMessage(response);
+            sendMessage(url, response);
         }
     } catch (err) {
-        logger.error(`Error while checking url '${url}'`);
+        logger.error(`Error while checking url '${url}': ${err.name} [${err.message}}`);
+        sendErrorMessage(url, err);
     }
 };
 
