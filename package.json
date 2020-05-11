@@ -4,7 +4,8 @@
   "description": "Tool to check frequently http response status",
   "main": "index.js",
   "scripts": {
-    "start": "node ./bin/http-checker.js"
+    "start": "node ./bin/http-checker.js",
+    "lint": "eslint ./src"
   },
   "bin": {
     "http-checker": "./bin/http-checker.js"
