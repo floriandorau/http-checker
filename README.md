@@ -1,5 +1,9 @@
 # http-checker
 
+[![Build Status](https://travis-ci.org/floriandorau/http-checker.svg?branch=master)](https://travis-ci.org/floriandorau/http-checker)
+
+Little CLI tool to frequently check http response status of different web endpoints.
+
 ## Run it
 
 ### As npm package
