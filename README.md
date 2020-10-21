@@ -1,6 +1,6 @@
 # http-checker
 
-[![Build Status](https://travis-ci.org/floriandorau/http-checker.svg?branch=master)](https://travis-ci.org/floriandorau/http-checker)
+[![Build Status](https://travis-ci.com/floriandorau/http-checker.svg?branch=master)](https://travis-ci.com/floriandorau/http-checker)
 
 Little CLI tool to frequently check http response status of different web endpoints.
 
