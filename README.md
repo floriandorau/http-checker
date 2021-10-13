@@ -14,7 +14,7 @@ The easiest way to run `http-checker` is to install it as global `npm` package l
 npm install -g @floriandorau/http-checker
 ```
 
-After installation it you can execute in your terminal via `http-checker`.
+After installation it you can execute `http-checker` in your terminal.
 
 ### From source
 
@@ -22,19 +22,19 @@ Checkout the repository and run `npm install` from root. Then you can run `npm s
 
 ## Configuration
 
-But you can run `http-checker` you first need to create `config.yml` at `{HOMEDIR}/.http-checker/config.yml`;
+Before you can run `http-checker` you first need to create a file `config.yml` at `{HOMEDIR}/.http-checker/config.yml`. 
 
 A valid configuration looks like the following:
 
 ```yaml
-interval: 30 # interval in secondes
+interval: 30 # interval in seconds
 slack:
   webbhook: https://your-webhoook
-  channel: your-chanel-name
+  channel: your-channel-name
 endpoints:
   - url: http://localhost:8080
     username: basic-auth-user
     password: basic-auth-password
 ```
 
-Currently only `Basic Auth` is supported.
+Currently only `Basic Auth` is supported for endpoints.
