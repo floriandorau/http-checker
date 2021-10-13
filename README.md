@@ -1,6 +1,7 @@
 # http-checker
 
 [![Build Status](https://travis-ci.com/floriandorau/http-checker.svg?branch=master)](https://travis-ci.com/floriandorau/http-checker)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=floriandorau_http-checker&metric=alert_status)](https://sonarcloud.io/dashboard?id=floriandorau_http-checker)
 
 Little CLI tool to frequently check http response status of different web endpoints.
 
