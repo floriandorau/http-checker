@@ -15,7 +15,7 @@
   "dependencies": {
     "chalk": "3.0.0",
     "fse": "4.0.1",
-    "got": "11.8.5",
+    "got": "12.5.3",
     "simple-node-logger": "18.12.24",
     "yaml": "1.8.2"
   },
